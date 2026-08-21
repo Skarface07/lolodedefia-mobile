@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "Lɔlɔ̃dedefia Fe Do",
+    "slug": "lolodedefia-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#0F5C33"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.dzidzofexose.lolodedefia"
+    },
+    "android": {
+      "package": "com.dzidzofexose.lolodedefia",
+      "adaptiveIcon": {
+        "backgroundColor": "#0F5C33"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}
