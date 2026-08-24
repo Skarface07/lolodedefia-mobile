@@ -19,6 +19,13 @@ export default function ProviderProfileScreen({ route, navigation }) {
     navigation.navigate("MissionTracking", { missionId });
   };
 
+  const requestThisProvider = () => {
+    navigation.navigate("NewRequest", {
+      mode: "instant",
+      preselectService: youth.skills[0],
+    });
+  };
+
   if (!youth) return null;
 
   return (
@@ -88,9 +95,15 @@ export default function ProviderProfileScreen({ route, navigation }) {
       </ScrollView>
 
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.cta} onPress={confirm}>
-          <Text style={styles.ctaText}>Confirmer cette personne</Text>
-        </TouchableOpacity>
+        {missionId ? (
+          <TouchableOpacity style={styles.cta} onPress={confirm}>
+            <Text style={styles.ctaText}>Confirmer cette personne</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.cta} onPress={requestThisProvider}>
+            <Text style={styles.ctaText}>Faire une demande</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </SafeAreaView>
   );

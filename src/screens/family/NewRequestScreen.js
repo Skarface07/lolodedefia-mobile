@@ -3,15 +3,16 @@ import { View, Text, TextInput, StyleSheet, SafeAreaView, TouchableOpacity, Scro
 import { Ionicons } from "@expo/vector-icons";
 import { colors, spacing, radius, typography } from "../../theme/theme";
 import { popularServices } from "../../data/demoData";
+import lomeZones from "../../data/lomeZones";
+import SelectModal from "../../components/SelectModal";
 import { useMissions } from "../../context/MissionsContext";
-
-const zones = ["Adidogomé", "Bè", "Tokoin", "Agoè", "Kodjoviakopé"];
 
 export default function NewRequestScreen({ route, navigation }) {
   const mode = route?.params?.mode ?? "instant";
+  const preselectService = route?.params?.preselectService ?? null;
   const { createRequest } = useMissions();
 
-  const [service, setService] = useState(null);
+  const [service, setService] = useState(preselectService);
   const [zone, setZone] = useState(null);
   const [budget, setBudget] = useState("");
   const [description, setDescription] = useState("");
@@ -54,17 +55,13 @@ export default function NewRequestScreen({ route, navigation }) {
         </View>
 
         <Text style={styles.label}>Zone</Text>
-        <View style={styles.chipsRow}>
-          {zones.map((z) => (
-            <TouchableOpacity
-              key={z}
-              style={[styles.chip, zone === z && styles.chipActive]}
-              onPress={() => setZone(z)}
-            >
-              <Text style={[styles.chipText, zone === z && styles.chipTextActive]}>{z}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+        <SelectModal
+          label="Choisir un quartier"
+          value={zone}
+          options={lomeZones}
+          onSelect={setZone}
+          placeholder="Sélectionner un quartier de Lomé"
+        />
 
         <Text style={styles.label}>{mode === "instant" ? "Créneau souhaité" : "Date et heure"}</Text>
         <View style={styles.readonlyBox}>

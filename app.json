@@ -8,7 +8,9 @@
     "splash": {
       "backgroundColor": "#0F5C33"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.dzidzofexose.lolodedefia"
@@ -21,6 +23,9 @@
     },
     "web": {
       "bundler": "metro"
-    }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }

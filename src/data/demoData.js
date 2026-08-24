@@ -5,7 +5,7 @@ export const popularServices = [
   { id: "4", label: "Aide aux aînés", icon: "hand-heart-outline", type: "MCI" },
   { id: "5", label: "Cours particuliers", icon: "book-open-outline", type: "MCI" },
   { id: "6", label: "Jardinage", icon: "flower-outline", type: "MCI" },
-  { id: "7", label: "Bricolage", icon: "hammer-outline", type: "MCI" },
+  { id: "7", label: "Bricolage", icon: "hammer", type: "MCI" },
   { id: "8", label: "Plus de services", icon: "grid-outline", type: "ION" },
 ];
 
@@ -52,8 +52,8 @@ export const recommendedProviders = [
 ];
 
 export const trustBadges = [
-  { id: "b1", label: "Prestataires vérifiés", icon: "shield-check-outline" },
+  { id: "b1", label: "Prestataires vérifiés", icon: "shield-checkmark-outline" },
   { id: "b2", label: "Tarifs transparents", icon: "cash-outline" },
-  { id: "b3", label: "Garantie 30 jours", icon: "calendar-check-outline" },
+  { id: "b3", label: "Garantie 30 jours", icon: "ribbon-outline" },
   { id: "b4", label: "Suivi en direct", icon: "location-outline" },
 ];

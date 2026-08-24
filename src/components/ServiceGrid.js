@@ -8,7 +8,7 @@ function ServiceIcon({ icon, type }) {
   return <Comp name={icon} size={24} color={colors.primary} />;
 }
 
-export default function ServiceGrid({ services, onSeeAll }) {
+export default function ServiceGrid({ services, onSeeAll, onServicePress }) {
   return (
     <View style={styles.section}>
       <View style={styles.sectionHeader}>
@@ -21,7 +21,11 @@ export default function ServiceGrid({ services, onSeeAll }) {
 
       <View style={styles.grid}>
         {services.map((s) => (
-          <TouchableOpacity key={s.id} style={styles.item}>
+          <TouchableOpacity
+            key={s.id}
+            style={styles.item}
+            onPress={() => onServicePress && onServicePress(s.label)}
+          >
             <View style={styles.iconWrap}>
               <ServiceIcon icon={s.icon} type={s.type} />
             </View>

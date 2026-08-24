@@ -2,6 +2,17 @@ import React, { createContext, useContext, useState } from "react";
 
 const MissionsContext = createContext(null);
 
+const SERVICE_COLORS = {
+  "Garde d'enfants": "#0F5C33",
+  "Ménage": "#C9A227",
+  "Chauffeur": "#378ADD",
+  "Aide aux aînés": "#D85A30",
+  "Cours particuliers": "#7F77DD",
+  "Jardinage": "#639922",
+  "Bricolage": "#993C1D",
+};
+const FALLBACK_COLOR = "#888888";
+
 const initialCandidates = [
   { id: "y1", name: "Ama Koffi", rating: 4.8, reviews: 32, badge: "Or", zone: "Adidogomé", skills: ["Garde d'enfants"], verified: true },
   { id: "y2", name: "Kokou Mensah", rating: 4.6, reviews: 21, badge: "Argent", zone: "Adidogomé", skills: ["Ménage", "Garde d'enfants"], verified: true },
@@ -24,6 +35,9 @@ const initialMissions = [
     youthEvaluated: false,
     checkIn: null,
     checkOut: null,
+    scheduledDate: null,
+    scheduledTime: null,
+    color: SERVICE_COLORS["Garde d'enfants"],
   },
 ];
 
@@ -44,6 +58,9 @@ export function MissionsProvider({ children }) {
       youthEvaluated: false,
       checkIn: null,
       checkOut: null,
+      scheduledDate: data.scheduledDate || null,
+      scheduledTime: data.scheduledTime || null,
+      color: SERVICE_COLORS[data.service] || FALLBACK_COLOR,
     };
     setMissions((prev) => [newMission, ...prev]);
     return newMission;
@@ -91,9 +108,32 @@ export function MissionsProvider({ children }) {
 
   const getMissionById = (id) => missions.find((m) => m.id === id);
 
+  // Retourne uniquement les missions ayant une date planifiée, formatées
+  // pour être consommées directement par le composant MonthCalendar.
+  const getScheduledEvents = () =>
+    missions
+      .filter((m) => m.scheduledDate)
+      .map((m) => ({
+        id: m.id,
+        date: m.scheduledDate,
+        color: m.color || FALLBACK_COLOR,
+        label: m.service,
+      }));
+
   return (
     <MissionsContext.Provider
-      value={{ candidates, missions, createRequest, chooseYouth, respondToMission, checkIn, checkOut, evaluate, getMissionById }}
+      value={{
+        candidates,
+        missions,
+        createRequest,
+        chooseYouth,
+        respondToMission,
+        checkIn,
+        checkOut,
+        evaluate,
+        getMissionById,
+        getScheduledEvents,
+      }}
     >
       {children}
     </MissionsContext.Provider>

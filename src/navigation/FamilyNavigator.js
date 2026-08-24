@@ -7,6 +7,8 @@ import ProviderProfileScreen from "../screens/family/ProviderProfileScreen";
 import MissionTrackingScreen from "../screens/family/MissionTrackingScreen";
 import EvaluationScreen from "../screens/family/EvaluationScreen";
 import ChatScreen from "../screens/family/ChatScreen";
+import PlanScheduleScreen from "../screens/family/PlanScheduleScreen";
+import ProvidersByServiceScreen from "../screens/family/ProvidersByServiceScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +22,8 @@ export default function FamilyNavigator() {
       <Stack.Screen name="MissionTracking" component={MissionTrackingScreen} />
       <Stack.Screen name="Evaluation" component={EvaluationScreen} options={{ presentation: "modal" }} />
       <Stack.Screen name="Chat" component={ChatScreen} />
+      <Stack.Screen name="PlanSchedule" component={PlanScheduleScreen} options={{ presentation: "modal" }} />
+      <Stack.Screen name="ProvidersByService" component={ProvidersByServiceScreen} />
     </Stack.Navigator>
   );
 }

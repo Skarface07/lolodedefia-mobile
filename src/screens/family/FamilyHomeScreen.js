@@ -22,12 +22,13 @@ export default function FamilyHomeScreen({ navigation }) {
 
         <PromoBanner
           onInstant={() => navigation.navigate("NewRequest", { mode: "instant" })}
-          onSchedule={() => navigation.navigate("NewRequest", { mode: "schedule" })}
+          onSchedule={() => navigation.navigate("PlanSchedule")}
         />
 
         <ServiceGrid
           services={popularServices}
           onSeeAll={() => navigation.navigate("NewRequest", { mode: "instant" })}
+          onServicePress={(service) => navigation.navigate("ProvidersByService", { service })}
         />
 
         <TrustBadges items={trustBadges} />
