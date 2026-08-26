@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -27,6 +27,8 @@ export default function PlanScheduleScreen({ navigation }) {
   const [time, setTime] = useState(null);
   const [description, setDescription] = useState("");
 
+  const scrollRef = useRef(null);
+
   const canSubmit = service && zone && selectedDate && time;
 
   const submit = () => {
@@ -41,6 +43,14 @@ export default function PlanScheduleScreen({ navigation }) {
       description,
     });
     navigation.goBack();
+  };
+
+  const handleDescriptionFocus = () => {
+    // Fait remonter le champ description juste au-dessus du clavier,
+    // comme le fait le champ de saisie dans la messagerie.
+    setTimeout(() => {
+      scrollRef.current?.scrollToEnd({ animated: true });
+    }, 150);
   };
 
   return (
@@ -66,6 +76,7 @@ export default function PlanScheduleScreen({ navigation }) {
         keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
       >
         <ScrollView
+          ref={scrollRef}
           contentContainerStyle={{
             padding: spacing.md,
             paddingBottom: spacing.xl,
@@ -114,6 +125,7 @@ export default function PlanScheduleScreen({ navigation }) {
           <TextInput
             value={description}
             onChangeText={setDescription}
+            onFocus={handleDescriptionFocus}
             placeholder="Décrivez votre besoin..."
             placeholderTextColor={colors.grayLight}
             multiline
