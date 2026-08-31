@@ -1,6 +1,15 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React, { useState, useRef } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, spacing, radius, typography } from "../../theme/theme";
 import { popularServices } from "../../data/demoData";
@@ -18,6 +27,8 @@ export default function NewRequestScreen({ route, navigation }) {
   const [budget, setBudget] = useState("");
   const [description, setDescription] = useState("");
 
+  const scrollRef = useRef(null);
+
   const canSubmit = service && zone;
 
   const submit = () => {
@@ -32,66 +43,103 @@ export default function NewRequestScreen({ route, navigation }) {
     navigation.replace("Proposals", { missionId: mission.id });
   };
 
+  const handleDescriptionFocus = () => {
+    setTimeout(() => {
+      scrollRef.current?.scrollToEnd({ animated: true });
+    }, 150);
+  };
+
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.headerRow}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={22} color={colors.dark} />
         </TouchableOpacity>
-        <Text style={[typography.h2, { marginLeft: spacing.sm }]}>Nouvelle demande</Text>
+        <Text style={[typography.h2, { marginLeft: spacing.sm }]}>
+          Nouvelle demande
+        </Text>
       </View>
 
-      <ScrollView contentContainerStyle={{ padding: spacing.md, paddingBottom: spacing.xl }}>
-        <Text style={styles.label}>Quel service recherchez-vous ?</Text>
-        <View style={styles.chipsRow}>
-          {popularServices.slice(0, 6).map((s) => (
-            <TouchableOpacity
-              key={s.id}
-              style={[styles.chip, service === s.label && styles.chipActive]}
-              onPress={() => setService(s.label)}
-            >
-              <Text style={[styles.chipText, service === s.label && styles.chipTextActive]}>{s.label}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
+      >
+        <ScrollView
+          ref={scrollRef}
+          contentContainerStyle={{
+            padding: spacing.md,
+            paddingBottom: spacing.xl,
+          }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <Text style={styles.label}>Quel service recherchez-vous ?</Text>
+          <View style={styles.chipsRow}>
+            {popularServices.slice(0, 6).map((s) => (
+              <TouchableOpacity
+                key={s.id}
+                style={[styles.chip, service === s.label && styles.chipActive]}
+                onPress={() => setService(s.label)}
+              >
+                <Text
+                  style={[
+                    styles.chipText,
+                    service === s.label && styles.chipTextActive,
+                  ]}
+                >
+                  {s.label}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
 
-        <Text style={styles.label}>Zone</Text>
-        <SelectModal
-          label="Choisir un quartier"
-          value={zone}
-          options={lomeZones}
-          onSelect={setZone}
-          placeholder="Sélectionner un quartier de Lomé"
-        />
+          <Text style={styles.label}>Zone</Text>
+          <SelectModal
+            label="Choisir un quartier"
+            value={zone}
+            options={lomeZones}
+            onSelect={setZone}
+            placeholder="Sélectionner un quartier de Lomé"
+          />
 
-        <Text style={styles.label}>{mode === "instant" ? "Créneau souhaité" : "Date et heure"}</Text>
-        <View style={styles.readonlyBox}>
-          <Ionicons name={mode === "instant" ? "flash" : "calendar-outline"} size={16} color={colors.primary} />
-          <Text style={styles.readonlyText}>
-            {mode === "instant" ? "Dès que possible (sous 30 min)" : "À planifier — étape suivante"}
+          <Text style={styles.label}>
+            {mode === "instant" ? "Créneau souhaité" : "Date et heure"}
           </Text>
-        </View>
+          <View style={styles.readonlyBox}>
+            <Ionicons
+              name={mode === "instant" ? "flash" : "calendar-outline"}
+              size={16}
+              color={colors.primary}
+            />
+            <Text style={styles.readonlyText}>
+              {mode === "instant"
+                ? "Dès que possible (sous 30 min)"
+                : "À planifier — étape suivante"}
+            </Text>
+          </View>
 
-        <Text style={styles.label}>Budget indicatif (FCFA)</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Ex. 2 500"
-          placeholderTextColor={colors.grayLight}
-          keyboardType="numeric"
-          value={budget}
-          onChangeText={setBudget}
-        />
+          <Text style={styles.label}>Budget indicatif (FCFA)</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Ex. 2 500"
+            placeholderTextColor={colors.grayLight}
+            keyboardType="numeric"
+            value={budget}
+            onChangeText={setBudget}
+          />
 
-        <Text style={styles.label}>Description</Text>
-        <TextInput
-          style={[styles.input, styles.textarea]}
-          placeholder="Décrivez votre besoin (ex : garder 2 enfants pendant 2h)..."
-          placeholderTextColor={colors.grayLight}
-          multiline
-          value={description}
-          onChangeText={setDescription}
-        />
-      </ScrollView>
+          <Text style={styles.label}>Description</Text>
+          <TextInput
+            style={[styles.input, styles.textarea]}
+            placeholder="Décrivez votre besoin (ex : garder 2 enfants pendant 2h)..."
+            placeholderTextColor={colors.grayLight}
+            multiline
+            value={description}
+            onChangeText={setDescription}
+            onFocus={handleDescriptionFocus}
+          />
+        </ScrollView>
+      </KeyboardAvoidingView>
 
       <View style={styles.footer}>
         <TouchableOpacity
@@ -108,8 +156,18 @@ export default function NewRequestScreen({ route, navigation }) {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.white },
-  headerRow: { flexDirection: "row", alignItems: "center", padding: spacing.md },
-  label: { fontSize: 13, fontWeight: "700", color: colors.dark, marginTop: spacing.md, marginBottom: spacing.sm },
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: spacing.md,
+  },
+  label: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: colors.dark,
+    marginTop: spacing.md,
+    marginBottom: spacing.sm,
+  },
   chipsRow: { flexDirection: "row", flexWrap: "wrap" },
   chip: {
     borderWidth: 1,
@@ -141,8 +199,17 @@ const styles = StyleSheet.create({
     color: colors.dark,
   },
   textarea: { height: 90, paddingTop: 12, textAlignVertical: "top" },
-  footer: { padding: spacing.md, borderTopWidth: 1, borderTopColor: colors.border },
-  cta: { backgroundColor: colors.primary, paddingVertical: 15, borderRadius: radius.pill, alignItems: "center" },
+  footer: {
+    padding: spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+  },
+  cta: {
+    backgroundColor: colors.primary,
+    paddingVertical: 15,
+    borderRadius: radius.pill,
+    alignItems: "center",
+  },
   ctaDisabled: { backgroundColor: colors.grayLight },
   ctaText: { color: colors.white, fontWeight: "700", fontSize: 14 },
 });
