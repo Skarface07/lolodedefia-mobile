@@ -7,6 +7,7 @@ import SosScreen from "../screens/youth/SosScreen";
 import EvaluationFamilyScreen from "../screens/youth/EvaluationFamilyScreen";
 import AcademyScreen from "../screens/youth/AcademyScreen";
 import ModuleDetailScreen from "../screens/youth/ModuleDetailScreen";
+import YouthChatScreen from "../screens/youth/YouthChatScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,7 @@ export default function YouthNavigator() {
       <Stack.Screen name="EvaluationFamily" component={EvaluationFamilyScreen} options={{ presentation: "modal" }} />
       <Stack.Screen name="Academy" component={AcademyScreen} />
       <Stack.Screen name="ModuleDetail" component={ModuleDetailScreen} />
+      <Stack.Screen name="YouthChat" component={YouthChatScreen} />
     </Stack.Navigator>
   );
 }
