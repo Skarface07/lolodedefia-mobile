@@ -1,7 +1,15 @@
 import React, { useState, useRef } from "react";
-
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, spacing, radius, typography } from "../../theme/theme";
 import { popularServices } from "../../data/demoData";
@@ -55,13 +63,13 @@ export default function NewRequestScreen({ route, navigation }) {
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
       >
         <ScrollView
           ref={scrollRef}
+          style={{ flex: 1 }}
           contentContainerStyle={{
             padding: spacing.md,
-            paddingBottom: spacing.xl,
+            paddingBottom: spacing.md,
           }}
           keyboardShouldPersistTaps="handled"
         >
@@ -131,17 +139,17 @@ export default function NewRequestScreen({ route, navigation }) {
             onFocus={handleDescriptionFocus}
           />
         </ScrollView>
-      </KeyboardAvoidingView>
 
-      <View style={styles.footer}>
-        <TouchableOpacity
-          style={[styles.cta, !canSubmit && styles.ctaDisabled]}
-          disabled={!canSubmit}
-          onPress={submit}
-        >
-          <Text style={styles.ctaText}>Trouver un prestataire</Text>
-        </TouchableOpacity>
-      </View>
+        <View style={styles.footer}>
+          <TouchableOpacity
+            style={[styles.cta, !canSubmit && styles.ctaDisabled]}
+            disabled={!canSubmit}
+            onPress={submit}
+          >
+            <Text style={styles.ctaText}>Trouver un prestataire</Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -195,6 +203,7 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     borderTopWidth: 1,
     borderTopColor: colors.border,
+    backgroundColor: colors.white,
   },
   cta: {
     backgroundColor: colors.primary,
