@@ -9,6 +9,7 @@ import EvaluationScreen from "../screens/family/EvaluationScreen";
 import ChatScreen from "../screens/family/ChatScreen";
 import PlanScheduleScreen from "../screens/family/PlanScheduleScreen";
 import ProvidersByServiceScreen from "../screens/family/ProvidersByServiceScreen";
+import PaymentScreen from "../screens/family/PaymentScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,7 @@ export default function FamilyNavigator() {
       <Stack.Screen name="Chat" component={ChatScreen} />
       <Stack.Screen name="PlanSchedule" component={PlanScheduleScreen} options={{ presentation: "modal" }} />
       <Stack.Screen name="ProvidersByService" component={ProvidersByServiceScreen} />
+      <Stack.Screen name="Payment" component={PaymentScreen} />
     </Stack.Navigator>
   );
 }
