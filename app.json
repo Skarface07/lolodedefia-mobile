@@ -5,12 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
-    "splash": {
-      "backgroundColor": "#0F5C33"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.dzidzofexose.lolodedefia"
@@ -25,7 +20,12 @@
       "bundler": "metro"
     },
     "plugins": [
-      "expo-font"
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#0F5C33"
+        }
+      ]
     ]
   }
 }
