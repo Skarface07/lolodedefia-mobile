@@ -1,0 +1,14 @@
+package com.dzidzofexose.lolodedefia.repository;
+
+import com.dzidzofexose.lolodedefia.entity.Role;
+import com.dzidzofexose.lolodedefia.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByPhone(String phone);
+    Optional<User> findByEmail(String email);
+    boolean existsByPhone(String phone);
+    List<User> findByRole(Role role);
+}
