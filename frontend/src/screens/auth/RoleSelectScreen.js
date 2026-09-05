@@ -8,10 +8,11 @@ import { useAuth } from "../../context/AuthContext";
 export default function RoleSelectScreen({ navigation }) {
   const { chooseRole } = useAuth();
 
-  const select = (role) => {
-    chooseRole(role);
-    navigation.navigate("PhoneLogin");
-  };
+
+const select = (role) => {
+  chooseRole(role);
+  navigation.navigate("Register");
+};
 
   return (
     <SafeAreaView style={styles.safe}>
