@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
-import QRCode from "react-native-qrcode-svg";
+// import QRCode from "react-native-qrcode-svg";
 import { colors, spacing, radius, typography } from "../../theme/theme";
 import { useAuth } from "../../context/AuthContext";
 import { useMissions } from "../../context/MissionsContext";
