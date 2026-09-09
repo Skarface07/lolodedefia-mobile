@@ -5,8 +5,10 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  Platform,
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, spacing, radius, typography } from "../../theme/theme";
@@ -34,82 +36,84 @@ export default function LoginScreen({ navigation }) {
         <Ionicons name="arrow-back" size={22} color={colors.dark} />
       </TouchableOpacity>
 
-      <KeyboardAwareScrollView
-        contentContainerStyle={{
-          padding: spacing.lg,
-          flexGrow: 1,
-          justifyContent: "center",
-        }}
-        enableOnAndroid={true}
-        extraScrollHeight={20}
-        keyboardShouldPersistTaps="handled"
-        keyboardOpeningTime={0}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
-        <Text style={typography.h1}>Content de vous revoir</Text>
-        <Text
-          style={[
-            typography.body,
-            { color: colors.gray, marginTop: 4, marginBottom: spacing.lg },
-          ]}
+        <ScrollView
+          contentContainerStyle={{
+            padding: spacing.lg,
+            flexGrow: 1,
+            justifyContent: "center",
+          }}
+          keyboardShouldPersistTaps="handled"
         >
-          Connectez-vous pour continuer.
-        </Text>
-
-        <Text style={styles.label}>Numéro de téléphone</Text>
-        <View style={styles.inputRow}>
-          <Text style={styles.prefix}>+228</Text>
-          <TextInput
-            style={styles.phoneInput}
-            placeholder="90 00 00 00"
-            placeholderTextColor={colors.grayLight}
-            keyboardType="phone-pad"
-            value={phone}
-            onChangeText={setPhone}
-          />
-        </View>
-
-        <Text style={styles.label}>Mot de passe</Text>
-        <View style={styles.inputRow}>
-          <TextInput
-            style={styles.phoneInput}
-            placeholder="Votre mot de passe"
-            placeholderTextColor={colors.grayLight}
-            secureTextEntry={!showPassword}
-            value={password}
-            onChangeText={setPassword}
-          />
-          <TouchableOpacity onPress={() => setShowPassword((v) => !v)}>
-            <Ionicons
-              name={showPassword ? "eye-off-outline" : "eye-outline"}
-              size={18}
-              color={colors.gray}
-            />
-          </TouchableOpacity>
-        </View>
-
-        {error && <Text style={styles.errorText}>{error}</Text>}
-
-        <TouchableOpacity
-          style={[styles.cta, (!canSubmit || loading) && styles.ctaDisabled]}
-          disabled={!canSubmit || loading}
-          onPress={submit}
-        >
-          <Text style={styles.ctaText}>
-            {loading ? "Connexion..." : "Se connecter"}
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={{ marginTop: spacing.md, alignItems: "center" }}
-          onPress={() => navigation.navigate("Register")}
-        >
+          <Text style={typography.h1}>Content de vous revoir</Text>
           <Text
-            style={{ color: colors.primary, fontSize: 13, fontWeight: "600" }}
+            style={[
+              typography.body,
+              { color: colors.gray, marginTop: 4, marginBottom: spacing.lg },
+            ]}
           >
-            Pas encore de compte ? S'inscrire
+            Connectez-vous pour continuer.
           </Text>
-        </TouchableOpacity>
-      </KeyboardAwareScrollView>
+
+          <Text style={styles.label}>Numéro de téléphone</Text>
+          <View style={styles.inputRow}>
+            <Text style={styles.prefix}>+228</Text>
+            <TextInput
+              style={styles.phoneInput}
+              placeholder="90 00 00 00"
+              placeholderTextColor={colors.grayLight}
+              keyboardType="phone-pad"
+              value={phone}
+              onChangeText={setPhone}
+            />
+          </View>
+
+          <Text style={styles.label}>Mot de passe</Text>
+          <View style={styles.inputRow}>
+            <TextInput
+              style={styles.phoneInput}
+              placeholder="Votre mot de passe"
+              placeholderTextColor={colors.grayLight}
+              secureTextEntry={!showPassword}
+              value={password}
+              onChangeText={setPassword}
+            />
+            <TouchableOpacity onPress={() => setShowPassword((v) => !v)}>
+              <Ionicons
+                name={showPassword ? "eye-off-outline" : "eye-outline"}
+                size={18}
+                color={colors.gray}
+              />
+            </TouchableOpacity>
+          </View>
+
+          {error && <Text style={styles.errorText}>{error}</Text>}
+
+          <TouchableOpacity
+            style={[styles.cta, (!canSubmit || loading) && styles.ctaDisabled]}
+            disabled={!canSubmit || loading}
+            onPress={submit}
+          >
+            <Text style={styles.ctaText}>
+              {loading ? "Connexion..." : "Se connecter"}
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{ marginTop: spacing.md, alignItems: "center" }}
+            onPress={() => navigation.navigate("Register")}
+          >
+            <Text
+              style={{ color: colors.primary, fontSize: 13, fontWeight: "600" }}
+            >
+              Pas encore de compte ? S'inscrire
+            </Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

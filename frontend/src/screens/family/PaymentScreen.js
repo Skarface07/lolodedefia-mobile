@@ -6,8 +6,10 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  Platform,
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors, spacing, radius, typography } from "../../theme/theme";
@@ -77,165 +79,167 @@ export default function PaymentScreen({ route, navigation }) {
         </Text>
       </View>
 
-      <KeyboardAwareScrollView
-        contentContainerStyle={{
-          padding: spacing.md,
-          paddingBottom: spacing.xl,
-        }}
-        enableOnAndroid={true}
-        extraScrollHeight={20}
-        keyboardShouldPersistTaps="handled"
-        keyboardOpeningTime={0}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
-        <View style={styles.summaryCard}>
-          <View style={styles.summaryRow}>
-            <MaterialCommunityIcons
-              name="account-circle"
-              size={30}
-              color={colors.primary}
-            />
-            <View style={{ marginLeft: spacing.sm }}>
-              <Text style={styles.summaryName}>{youth.name}</Text>
-              <Text style={styles.summaryMeta}>
-                {mission.service} · {mission.zone}
+        <ScrollView
+          contentContainerStyle={{
+            padding: spacing.md,
+            paddingBottom: spacing.xl,
+          }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={styles.summaryCard}>
+            <View style={styles.summaryRow}>
+              <MaterialCommunityIcons
+                name="account-circle"
+                size={30}
+                color={colors.primary}
+              />
+              <View style={{ marginLeft: spacing.sm }}>
+                <Text style={styles.summaryName}>{youth.name}</Text>
+                <Text style={styles.summaryMeta}>
+                  {mission.service} · {mission.zone}
+                </Text>
+              </View>
+            </View>
+          </View>
+
+          <Text style={styles.label}>Montant convenu (FCFA)</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Ex. 2 500"
+            placeholderTextColor={colors.grayLight}
+            keyboardType="numeric"
+            value={amount}
+            onChangeText={setAmount}
+          />
+
+          <View style={styles.breakdownCard}>
+            <View style={styles.breakdownRow}>
+              <Text style={styles.breakdownLabel}>Montant total</Text>
+              <Text style={styles.breakdownValue}>
+                {numericAmount.toLocaleString("fr-FR")} F
+              </Text>
+            </View>
+            <View style={styles.breakdownRow}>
+              <Text style={styles.breakdownLabel}>
+                Frais de service ({Math.round(PLATFORM_COMMISSION_RATE * 100)}%)
+              </Text>
+              <Text style={styles.breakdownValueMuted}>
+                − {commission.toLocaleString("fr-FR")} F
+              </Text>
+            </View>
+            <View
+              style={[
+                styles.breakdownRow,
+                {
+                  marginTop: 4,
+                  paddingTop: spacing.sm,
+                  borderTopWidth: 1,
+                  borderTopColor: colors.border,
+                },
+              ]}
+            >
+              <Text style={styles.breakdownLabelBold}>
+                Reversé à {youth.name.split(" ")[0]}
+              </Text>
+              <Text style={styles.breakdownValueBold}>
+                {youthShare.toLocaleString("fr-FR")} F
               </Text>
             </View>
           </View>
-        </View>
 
-        <Text style={styles.label}>Montant convenu (FCFA)</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Ex. 2 500"
-          placeholderTextColor={colors.grayLight}
-          keyboardType="numeric"
-          value={amount}
-          onChangeText={setAmount}
-        />
+          <Text style={styles.label}>Moyen de paiement</Text>
+          <View style={styles.providersRow}>
+            {PROVIDERS.map((p) => {
+              const active = provider === p.id;
+              return (
+                <TouchableOpacity
+                  key={p.id}
+                  style={[
+                    styles.providerCard,
+                    active && {
+                      borderColor: p.color,
+                      backgroundColor: `${p.color}14`,
+                    },
+                  ]}
+                  onPress={() => setProvider(p.id)}
+                >
+                  <View
+                    style={[
+                      styles.providerIconWrap,
+                      { backgroundColor: p.color },
+                    ]}
+                  >
+                    <MaterialCommunityIcons
+                      name={p.icon}
+                      size={18}
+                      color={colors.white}
+                    />
+                  </View>
+                  <Text
+                    style={[
+                      styles.providerLabel,
+                      active && { color: p.color, fontWeight: "800" },
+                    ]}
+                  >
+                    {p.label}
+                  </Text>
+                  {active && (
+                    <Ionicons
+                      name="checkmark-circle"
+                      size={18}
+                      color={p.color}
+                      style={{ marginLeft: "auto" }}
+                    />
+                  )}
+                </TouchableOpacity>
+              );
+            })}
+          </View>
 
-        <View style={styles.breakdownCard}>
-          <View style={styles.breakdownRow}>
-            <Text style={styles.breakdownLabel}>Montant total</Text>
-            <Text style={styles.breakdownValue}>
-              {numericAmount.toLocaleString("fr-FR")} F
+          <Text style={styles.label}>Numéro Mobile Money</Text>
+          <View style={styles.inputRow}>
+            <Text style={styles.prefix}>+228</Text>
+            <TextInput
+              style={styles.phoneInput}
+              placeholder="90 00 00 00"
+              placeholderTextColor={colors.grayLight}
+              keyboardType="phone-pad"
+              value={phone}
+              onChangeText={setPhone}
+            />
+          </View>
+
+          <View style={styles.escrowNote}>
+            <MaterialCommunityIcons
+              name="shield-lock-outline"
+              size={16}
+              color={colors.primary}
+            />
+            <Text style={styles.escrowNoteText}>
+              Votre paiement est conservé en séquestre par Lɔlɔ̃dedefia Fe Do et
+              n'est reversé au prestataire qu'une fois la mission terminée.
             </Text>
           </View>
-          <View style={styles.breakdownRow}>
-            <Text style={styles.breakdownLabel}>
-              Frais de service ({Math.round(PLATFORM_COMMISSION_RATE * 100)}%)
-            </Text>
-            <Text style={styles.breakdownValueMuted}>
-              − {commission.toLocaleString("fr-FR")} F
-            </Text>
-          </View>
-          <View
-            style={[
-              styles.breakdownRow,
-              {
-                marginTop: 4,
-                paddingTop: spacing.sm,
-                borderTopWidth: 1,
-                borderTopColor: colors.border,
-              },
-            ]}
+
+          <TouchableOpacity
+            style={[styles.cta, (!canPay || processing) && styles.ctaDisabled]}
+            disabled={!canPay || processing}
+            onPress={submit}
           >
-            <Text style={styles.breakdownLabelBold}>
-              Reversé à {youth.name.split(" ")[0]}
-            </Text>
-            <Text style={styles.breakdownValueBold}>
-              {youthShare.toLocaleString("fr-FR")} F
-            </Text>
-          </View>
-        </View>
-
-        <Text style={styles.label}>Moyen de paiement</Text>
-        <View style={styles.providersRow}>
-          {PROVIDERS.map((p) => {
-            const active = provider === p.id;
-            return (
-              <TouchableOpacity
-                key={p.id}
-                style={[
-                  styles.providerCard,
-                  active && {
-                    borderColor: p.color,
-                    backgroundColor: `${p.color}14`,
-                  },
-                ]}
-                onPress={() => setProvider(p.id)}
-              >
-                <View
-                  style={[
-                    styles.providerIconWrap,
-                    { backgroundColor: p.color },
-                  ]}
-                >
-                  <MaterialCommunityIcons
-                    name={p.icon}
-                    size={18}
-                    color={colors.white}
-                  />
-                </View>
-                <Text
-                  style={[
-                    styles.providerLabel,
-                    active && { color: p.color, fontWeight: "800" },
-                  ]}
-                >
-                  {p.label}
-                </Text>
-                {active && (
-                  <Ionicons
-                    name="checkmark-circle"
-                    size={18}
-                    color={p.color}
-                    style={{ marginLeft: "auto" }}
-                  />
-                )}
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-
-        <Text style={styles.label}>Numéro Mobile Money</Text>
-        <View style={styles.inputRow}>
-          <Text style={styles.prefix}>+228</Text>
-          <TextInput
-            style={styles.phoneInput}
-            placeholder="90 00 00 00"
-            placeholderTextColor={colors.grayLight}
-            keyboardType="phone-pad"
-            value={phone}
-            onChangeText={setPhone}
-          />
-        </View>
-
-        <View style={styles.escrowNote}>
-          <MaterialCommunityIcons
-            name="shield-lock-outline"
-            size={16}
-            color={colors.primary}
-          />
-          <Text style={styles.escrowNoteText}>
-            Votre paiement est conservé en séquestre par Lɔlɔ̃dedefia Fe Do et
-            n'est reversé au prestataire qu'une fois la mission terminée.
-          </Text>
-        </View>
-
-        <TouchableOpacity
-          style={[styles.cta, (!canPay || processing) && styles.ctaDisabled]}
-          disabled={!canPay || processing}
-          onPress={submit}
-        >
-          {processing ? (
-            <Text style={styles.ctaText}>Traitement du paiement...</Text>
-          ) : (
-            <Text style={styles.ctaText}>
-              Payer {numericAmount.toLocaleString("fr-FR")} F en toute sécurité
-            </Text>
-          )}
-        </TouchableOpacity>
-      </KeyboardAwareScrollView>
+            {processing ? (
+              <Text style={styles.ctaText}>Traitement du paiement...</Text>
+            ) : (
+              <Text style={styles.ctaText}>
+                Payer {numericAmount.toLocaleString("fr-FR")} F en toute sécurité
+              </Text>
+            )}
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

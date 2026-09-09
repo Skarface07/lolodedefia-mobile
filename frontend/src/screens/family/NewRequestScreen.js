@@ -6,8 +6,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   Platform,
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, spacing, radius, typography } from "../../theme/theme";
@@ -51,93 +52,95 @@ export default function NewRequestScreen({ route, navigation }) {
         </Text>
       </View>
 
-      <KeyboardAwareScrollView
-        contentContainerStyle={{
-          padding: spacing.md,
-          paddingBottom: spacing.xl,
-        }}
-        enableOnAndroid={true}
-        extraScrollHeight={20}
-        keyboardShouldPersistTaps="handled"
-        keyboardOpeningTime={0}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
-        <Text style={styles.label}>Quel service recherchez-vous ?</Text>
-        <View style={styles.chipsRow}>
-          {popularServices.slice(0, 6).map((s) => (
-            <TouchableOpacity
-              key={s.id}
-              style={[styles.chip, service === s.label && styles.chipActive]}
-              onPress={() => setService(s.label)}
-            >
-              <Text
-                style={[
-                  styles.chipText,
-                  service === s.label && styles.chipTextActive,
-                ]}
-              >
-                {s.label}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        <Text style={styles.label}>Zone</Text>
-        <SelectModal
-          label="Choisir un quartier"
-          value={zone}
-          options={lomeZones}
-          onSelect={setZone}
-          placeholder="Sélectionner un quartier de Lomé"
-        />
-
-        <Text style={styles.label}>
-          {mode === "instant" ? "Créneau souhaité" : "Date et heure"}
-        </Text>
-        <View style={styles.readonlyBox}>
-          <Ionicons
-            name={mode === "instant" ? "flash" : "calendar-outline"}
-            size={16}
-            color={colors.primary}
-          />
-          <Text style={styles.readonlyText}>
-            {mode === "instant"
-              ? "Dès que possible (sous 30 min)"
-              : "À planifier — étape suivante"}
-          </Text>
-        </View>
-
-        <Text style={styles.label}>Budget indicatif (FCFA)</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Ex. 2 500"
-          placeholderTextColor={colors.grayLight}
-          keyboardType="numeric"
-          value={budget}
-          onChangeText={setBudget}
-        />
-
-        <Text style={styles.label}>Description</Text>
-        <TextInput
-          style={[styles.input, styles.textarea]}
-          placeholder="Décrivez votre besoin (ex : garder 2 enfants pendant 2h)..."
-          placeholderTextColor={colors.grayLight}
-          multiline
-          value={description}
-          onChangeText={setDescription}
-        />
-
-        <TouchableOpacity
-          style={[
-            styles.cta,
-            !canSubmit && styles.ctaDisabled,
-            { marginTop: spacing.lg },
-          ]}
-          disabled={!canSubmit}
-          onPress={submit}
+        <ScrollView
+          contentContainerStyle={{
+            padding: spacing.md,
+            paddingBottom: spacing.xl,
+          }}
+          keyboardShouldPersistTaps="handled"
         >
-          <Text style={styles.ctaText}>Trouver un prestataire</Text>
-        </TouchableOpacity>
-      </KeyboardAwareScrollView>
+          <Text style={styles.label}>Quel service recherchez-vous ?</Text>
+          <View style={styles.chipsRow}>
+            {popularServices.slice(0, 6).map((s) => (
+              <TouchableOpacity
+                key={s.id}
+                style={[styles.chip, service === s.label && styles.chipActive]}
+                onPress={() => setService(s.label)}
+              >
+                <Text
+                  style={[
+                    styles.chipText,
+                    service === s.label && styles.chipTextActive,
+                  ]}
+                >
+                  {s.label}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          <Text style={styles.label}>Zone</Text>
+          <SelectModal
+            label="Choisir un quartier"
+            value={zone}
+            options={lomeZones}
+            onSelect={setZone}
+            placeholder="Sélectionner un quartier de Lomé"
+          />
+
+          <Text style={styles.label}>
+            {mode === "instant" ? "Créneau souhaité" : "Date et heure"}
+          </Text>
+          <View style={styles.readonlyBox}>
+            <Ionicons
+              name={mode === "instant" ? "flash" : "calendar-outline"}
+              size={16}
+              color={colors.primary}
+            />
+            <Text style={styles.readonlyText}>
+              {mode === "instant"
+                ? "Dès que possible (sous 30 min)"
+                : "À planifier — étape suivante"}
+            </Text>
+          </View>
+
+          <Text style={styles.label}>Budget indicatif (FCFA)</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Ex. 2 500"
+            placeholderTextColor={colors.grayLight}
+            keyboardType="numeric"
+            value={budget}
+            onChangeText={setBudget}
+          />
+
+          <Text style={styles.label}>Description</Text>
+          <TextInput
+            style={[styles.input, styles.textarea]}
+            placeholder="Décrivez votre besoin (ex : garder 2 enfants pendant 2h)..."
+            placeholderTextColor={colors.grayLight}
+            multiline
+            value={description}
+            onChangeText={setDescription}
+          />
+
+          <TouchableOpacity
+            style={[
+              styles.cta,
+              !canSubmit && styles.ctaDisabled,
+              { marginTop: spacing.lg },
+            ]}
+            disabled={!canSubmit}
+            onPress={submit}
+          >
+            <Text style={styles.ctaText}>Trouver un prestataire</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
