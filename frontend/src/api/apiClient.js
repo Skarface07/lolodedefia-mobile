@@ -6,7 +6,7 @@ let authToken = null;
 
 export function setAuthToken(token) {
   authToken = token;
-}SWB 
+} 
 async function request(path, options = {}) {
   const headers = {
     "Content-Type": "application/json",

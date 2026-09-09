@@ -6,8 +6,8 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, spacing, radius, typography } from "../../theme/theme";
 import { useAuth } from "../../context/AuthContext";
@@ -43,6 +43,7 @@ export default function LoginScreen({ navigation }) {
         enableOnAndroid={true}
         extraScrollHeight={20}
         keyboardShouldPersistTaps="handled"
+        keyboardOpeningTime={0}
       >
         <Text style={typography.h1}>Content de vous revoir</Text>
         <Text

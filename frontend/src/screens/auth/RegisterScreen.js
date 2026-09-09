@@ -6,8 +6,8 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, spacing, radius, typography } from "../../theme/theme";
 import lomeZones from "../../data/lomeZones";
@@ -77,6 +77,7 @@ export default function RegisterScreen({ navigation }) {
         enableOnAndroid={true}
         extraScrollHeight={20}
         keyboardShouldPersistTaps="handled"
+        keyboardOpeningTime={0}
       >
         <Text style={styles.badge}>
           {role === "family" ? "Famille / Entreprise" : "Jeune prestataire"}

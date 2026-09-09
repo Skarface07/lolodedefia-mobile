@@ -28,14 +28,10 @@ export default function PassportScreen() {
         <Text style={typography.h1}>Passeport professionnel</Text>
 
         <View style={styles.card}>
-          <View style={styles.qrBox}>
-            <QRCode
-              value={qrValue}
-              size={100}
-              color={colors.dark}
-              backgroundColor={colors.white}
-            />
-          </View>
+         // APRÈS (placeholder temporaire de test)
+<View style={styles.qrBox}>
+  <View style={{ width: 100, height: 100, backgroundColor: colors.border }} />
+</View>
           <Text style={styles.name}>{user?.name}</Text>
           <Text style={styles.caption}>
             ID prestataire : {user?.id?.toUpperCase()}

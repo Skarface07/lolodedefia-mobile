@@ -7,8 +7,8 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors, spacing, radius, typography } from "../../theme/theme";
 import {
@@ -85,6 +85,7 @@ export default function PaymentScreen({ route, navigation }) {
         enableOnAndroid={true}
         extraScrollHeight={20}
         keyboardShouldPersistTaps="handled"
+        keyboardOpeningTime={0}
       >
         <View style={styles.summaryCard}>
           <View style={styles.summaryRow}>

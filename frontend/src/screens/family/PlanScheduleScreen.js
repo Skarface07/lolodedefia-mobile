@@ -4,11 +4,11 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
   TextInput,
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, spacing, radius, typography } from "../../theme/theme";
@@ -75,13 +75,16 @@ export default function PlanScheduleScreen({ navigation }) {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
       >
-        <ScrollView
+        <KeyboardAwareScrollView
           ref={scrollRef}
           contentContainerStyle={{
             padding: spacing.md,
             paddingBottom: spacing.xl,
           }}
+          enableOnAndroid={true}
+          extraScrollHeight={20}
           keyboardShouldPersistTaps="handled"
+          keyboardOpeningTime={0}
         >
           <MonthCalendar
             events={getScheduledEvents()}
@@ -131,7 +134,7 @@ export default function PlanScheduleScreen({ navigation }) {
             multiline
             style={styles.textarea}
           />
-        </ScrollView>
+        </KeyboardAwareScrollView>
       </KeyboardAvoidingView>
 
       <View style={styles.footer}>
