@@ -1,6 +1,6 @@
 // ⚠️ Remplace cette IP par l'adresse IP locale de TON ordinateur sur le
 // réseau Wi-Fi (tape "ipconfig" dans un terminal, cherche "Adresse IPv4").
-const API_BASE_URL = "http://192.168.137.1:8080/api";
+const API_BASE_URL = "http://192.168.9.17:8080/api";
 
 let authToken = null;
 
